@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ramon's English Review: Home & City</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            /* Tema Claro - Self Study App Vibe (Estilo Duolingo/Babbel) */
+            --bg-body: #F7F9FC;
+            --bg-sidebar: #1E293B;
+            --bg-card: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --primary: #58CC02; /* Verde Gamificado */
+            --primary-hover: #46A302;
+            --primary-shadow: #58a700;
+            --secondary: #3B82F6; /* Azul brillante */
+            --secondary-hover: #2563EB;
+            --accent: #FFC800; /* Amarillo monedas/estrellas */
+            --accent-shadow: #e5b400;
+            --success: #58CC02;
+            --error: #FF4B4B;
+            --error-shadow: #ea3939;
+            --border-color: #E2E8F0;
+            
+            /* Tipografía */
+            --font-heading: 'Outfit', sans-serif;
+            --font-body: 'Nunito', sans-serif;
+            
+            /* Dimensiones */
+            --sidebar-width: 280px;
+            --header-height: 70px;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 32px;
+            
+            /* Transiciones */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Tema Oscuro */
+        [data-theme="dark"] {
+            --bg-body: #0F172A;
+            --bg-sidebar: #020617;
+            --bg-card: #1E293B;
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            overflow: hidden; /* El contenedor main-content manejará el scroll */
+            transition: background-color var(--transition-normal), color var(--transition-normal);
+        }
+
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); font-weight: 700; }
+        button { font-family: var(--font-heading); cursor: pointer; border: none; outline: none; background: transparent; }
+        ul { list-style: none; }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            display: flex;
+            flex-direction: column;
+            padding: 25px 0;
+            z-index: 100;
+            transition: transform var(--transition-normal);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+        }
+
+        .brand {
+            padding: 0 25px;
+            margin-bottom: 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .brand i { font-size: 32px; color: var(--primary); }
+        .brand h1 { font-size: 20px; line-height: 1.2; }
+        .brand span { font-size: 13px; color: var(--text-muted); font-family: var(--font-body); }
+
+        .module-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .module-item {
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            color: #94A3B8;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border: 2px solid transparent;
+        }
+        .module-item:hover { background: rgba(255,255,255,0.05); color: white; }
+        .module-item.active {
+            background: rgba(88, 204, 2, 0.1);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .module-icon { font-size: 20px; width: 30px; text-align: center; }
+        .module-title { font-size: 15px; font-weight: 700; }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .top-header {
+            height: var(--header-height);
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border-bottom: 2px solid var(--border-color);
+            z-index: 10;
+        }
+
+        .header-title { font-size: 20px; color: var(--text-main); font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        
+        .score-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 200, 0, 0.15);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 2px solid var(--accent);
+            color: #D97706;
+            font-size: 20px;
+            font-weight: 800;
+            font-family: var(--font-heading);
+        }
+        .score-container i { color: var(--accent); }
+
+        .header-controls { display: flex; gap: 15px; }
+        .control-btn {
+            width: 45px; height: 45px;
+            border-radius: 50%;
+            background: var(--bg-body);
+            color: var(--text-muted);
+            display: flex; justify-content: center; align-items: center;
+            font-size: 18px; border: 2px solid var(--border-color);
+            transition: var(--transition-fast);
+        }
+        .control-btn:hover { color: var(--secondary); border-color: var(--secondary); background: rgba(59, 130, 246, 0.1); }
+
+        /* ProgressBar */
+        .progress-wrapper { width: 100%; height: 8px; background: var(--border-color); }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.5s ease; border-radius: 0 4px 4px 0; }
+
+        .slide-viewport {
+            flex: 1;
+            overflow-y: auto; /* PERMITE SCROLL FLUIDO */
+            overflow-x: hidden;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            scroll-behavior: smooth;
+        }
+
+        .slide-container {
+            width: 100%;
+            max-width: 900px; /* Ancho máximo para legibilidad, pero adaptable */
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.4s ease;
+            margin-bottom: 40px;
+        }
+
+        /* Footer / Navegación inferior */
+        .bottom-nav {
+            padding: 20px 40px;
+            background: var(--bg-card);
+            border-top: 2px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .nav-btn {
+            padding: 16px 32px;
+            border-radius: var(--radius-sm);
+            font-size: 18px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition-fast);
+        }
+
+        .nav-btn-prev { background: transparent; color: var(--text-muted); border: 2px solid var(--border-color); }
+        .nav-btn-prev:hover { background: var(--border-color); color: var(--text-main); }
+        
+        .nav-btn-next { 
+            background: var(--primary); 
+            color: white; 
+            border-bottom: 4px solid var(--primary-shadow); 
+        }
+        .nav-btn-next:hover { 
+            background: var(--primary-hover); 
+            transform: translateY(2px); 
+            border-bottom-width: 2px; 
+            margin-top: 2px;
+        }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; border-bottom-width: 4px; margin-top: 0; }
+
+        .slide-type-badge {
+            align-self: flex-start;
+            background: var(--secondary);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .badge-lesson { background: var(--secondary); }
+        .badge-exercise { background: var(--accent); color: #B45309; }
+
+        .slide-title-main { font-size: 38px; color: var(--text-main); margin-bottom: 10px; line-height: 1.2; }
+        .slide-subtitle { font-size: 18px; color: var(--text-muted); margin-bottom: 35px; font-weight: 500; }
+
+        /* Grid de Chunks (Mini-Lessons) */
+        .chunk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; width: 100%; }
+        
+        .chunk-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            transition: var(--transition-fast);
+        }
+        .chunk-card:hover { border-color: var(--secondary); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .chunk-icon-wrapper { font-size: 40px; }
+        .chunk-content { flex: 1; }
+        .chunk-en { font-family: var(--font-heading); font-size: 20px; font-weight: 800; color: var(--text-main); display: block; margin-bottom: 4px; }
+        .chunk-es { font-size: 15px; color: var(--text-muted); }
+
+        .audio-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(59, 130, 246, 0.1); color: var(--secondary);
+            display: flex; justify-content: center; align-items: center; font-size: 18px;
+            transition: var(--transition-fast); flex-shrink: 0;
+        }
+        .audio-btn:hover { background: var(--secondary); color: white; transform: scale(1.1); }
+
+        
+        /* 1. MATCHING */
+        .game-matching-container { display: flex; gap: 20px; width: 100%; flex-wrap: wrap; }
+        .matching-col { flex: 1; display: flex; flex-direction: column; gap: 15px; min-width: 250px; }
+        .match-btn {
+            background: var(--bg-card);
+            padding: 18px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--border-color);
+            border-bottom: 4px solid var(--border-color);
+            font-size: 18px; font-weight: 700; color: var(--text-main);
+            transition: var(--transition-fast); text-align: center;
+        }
+        .match-btn:hover { background: var(--bg-body); transform: translateY(2px); border-bottom-width: 2px; margin-top: 2px; }
+        .match-btn.selected { border-color: var(--secondary); background: rgba(59,130,246,0.1); color: var(--secondary); border-bottom-color: var(--secondary); }
+        .match-btn.matched { background: var(--success); color: white; border-color: var(--primary-shadow); opacity: 0.8; pointer-events: none; border-bottom-width: 2px; transform: translateY(2px); }
+        .match-btn.error { animation: shake 0.4s; border-color: var(--error); background: rgba(255,75,75,0.1); color: var(--error); border-bottom-color: var(--error-shadow); }
+
+        /* 2. BUILDER (Drag & Drop visual) */
+        .builder-area { background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 2px solid var(--border-color); width: 100%; text-align: center; }
+        .builder-target { font-size: 22px; color: var(--text-muted); margin-bottom: 25px; font-weight: 600; font-style: italic; }
+        .builder-dropzone {
+            min-height: 80px; border: 3px dashed var(--border-color); border-radius: var(--radius-sm); margin-bottom: 30px;
+            display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; padding: 15px; background: var(--bg-body); transition: var(--transition-fast);
+        }
+        .builder-dropzone.success { border-color: var(--success); background: rgba(88,204,2,0.1); }
+        .builder-dropzone.error { border-color: var(--error); animation: shake 0.4s; background: rgba(255,75,75,0.1); }
+        .builder-bank { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; }
+        
+        .word-chip {
+            background: var(--bg-card); color: var(--text-main); padding: 12px 20px; border-radius: 12px;
+            font-size: 20px; font-weight: 700; border: 2px solid var(--border-color); border-bottom: 4px solid var(--border-color);
+            cursor: pointer; transition: var(--transition-fast);
+        }
+        .word-chip:hover { border-color: var(--secondary); color: var(--secondary); transform: translateY(2px); border-bottom-width: 2px; margin-top: 2px; }
+        .word-chip.in-zone { background: var(--secondary); color: white; border-color: var(--secondary-hover); border-bottom-color: #1D4ED8; }
+
+        /* 3. FILL IN THE BLANKS */
+        .fill-container { background: var(--bg-card); padding: 40px 30px; border-radius: var(--radius-md); border: 2px solid var(--border-color); text-align: center; width: 100%; }
+        .fill-sentence { font-size: 28px; color: var(--text-main); font-weight: 800; line-height: 1.8; margin-bottom: 35px; }
+        .fill-blank {
+            display: inline-block; min-width: 140px; height: 40px; border-bottom: 4px dashed var(--text-muted);
+            vertical-align: middle; margin: 0 10px; color: var(--secondary); text-align: center; transition: var(--transition-fast);
+        }
+        .fill-blank.filled { border-bottom-style: solid; border-color: var(--success); color: var(--success); }
+        .fill-options { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        
+        /* 4. READING QUIZ */
+        .reading-container { background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 2px solid var(--border-color); width: 100%; }
+        .reading-text { font-size: 18px; line-height: 1.7; color: var(--text-main); margin-bottom: 25px; padding: 25px; background: rgba(59,130,246,0.05); border-left: 5px solid var(--secondary); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; font-weight: 500; }
+        .quiz-item { background: var(--bg-body); padding: 20px; border-radius: var(--radius-sm); display: flex; justify-content: space-between; align-items: center; border: 2px solid var(--border-color); margin-bottom: 15px; flex-wrap: wrap; gap: 15px;}
+        .quiz-question { font-weight: 700; font-size: 18px; flex: 1; min-width: 200px;}
+        .quiz-options { display: flex; gap: 10px; }
+        .quiz-btn { padding: 10px 25px; border-radius: 20px; border: 2px solid var(--border-color); font-weight: 800; background: var(--bg-card); color: var(--text-main); transition: var(--transition-fast); }
+        .quiz-btn:hover { border-color: var(--secondary); color: var(--secondary); }
+        .quiz-btn.correct { background: var(--success); color: white; border-color: var(--primary-shadow); pointer-events: none; }
+        .quiz-btn.incorrect { background: var(--error); color: white; border-color: var(--error-shadow); animation: shake 0.4s; pointer-events: none; }
+
+        /* 5. CHAT SIMULATOR */
+        .chat-app { width: 100%; background: var(--bg-card); border-radius: var(--radius-md); border: 2px solid var(--border-color); overflow: hidden; display: flex; flex-direction: column; height: 500px; }
+        .chat-header { background: var(--secondary); color: white; padding: 15px 20px; display: flex; align-items: center; gap: 15px; }
+        .chat-avatar { width: 45px; height: 45px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; color: var(--secondary); }
+        .chat-name { font-size: 18px; font-weight: 800; }
+        .chat-body { flex: 1; padding: 20px; background: var(--bg-body); overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .msg-bubble { max-width: 85%; padding: 15px 20px; border-radius: 20px; font-size: 16px; font-weight: 600; animation: slideUpFade 0.3s ease; line-height: 1.4;}
+        .msg-npc { background: var(--bg-card); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px; border: 1px solid var(--border-color); }
+        .msg-player { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-controls { padding: 15px; background: var(--bg-card); border-top: 2px solid var(--border-color); display: flex; flex-direction: column; gap: 10px; }
+        .chat-opt-btn { background: var(--bg-body); border: 2px solid var(--border-color); padding: 15px; border-radius: var(--radius-sm); text-align: left; font-size: 16px; font-weight: 700; color: var(--text-main); transition: var(--transition-fast); }
+        .chat-opt-btn:hover { border-color: var(--secondary); color: var(--secondary); background: rgba(59,130,246,0.05); }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition-normal); padding: 20px;}
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content { background: var(--bg-card); width: 100%; max-width: 600px; border-radius: var(--radius-md); padding: 30px; position: relative; transform: translateY(20px) scale(0.95); transition: var(--transition-normal); max-height: 85vh; overflow-y: auto; border: 2px solid var(--border-color); }
+        .modal-overlay.active .modal-content { transform: translateY(0) scale(1); }
+        .modal-close { position: absolute; top: 20px; right: 20px; font-size: 28px; color: var(--text-muted); cursor: pointer; }
+        .modal-close:hover { color: var(--error); }
+        
+        .dict-item { padding: 15px 0; border-bottom: 2px dashed var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+        .dict-en { font-weight: 800; font-size: 18px; color: var(--text-main); }
+        .dict-es { font-size: 15px; color: var(--text-muted); }
+
+        /* Feedback Flotante de Puntos */
+        .point-feedback {
+            position: fixed; pointer-events: none; color: var(--accent); font-family: var(--font-heading); font-size: 28px; font-weight: 800; text-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 9999; opacity: 0; animation: floatUp 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUpFade { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0) scale(1); } 100% { opacity: 0; transform: translateY(-50px) scale(1.5); } }
+
+        #confetti-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9000; }
+
+        @media (max-width: 1024px) { :root { --sidebar-width: 240px; } }
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar { position: fixed; left: -100%; width: 85%; max-width: 320px; height: 100%; box-shadow: 20px 0 50px rgba(0,0,0,0.5); }
+            .sidebar.mobile-open { left: 0; }
+            .top-header { padding: 0 20px; }
+            .slide-viewport { padding: 20px 15px; }
+            .bottom-nav { padding: 15px 20px; height: 80px; }
+            .nav-btn { padding: 12px 20px; font-size: 15px; }
+            .slide-title-main { font-size: 28px; }
+            .chunk-grid { grid-template-columns: 1fr; }
+            .fill-sentence { font-size: 22px; }
+            .quiz-item { flex-direction: column; align-items: flex-start; }
+            .score-container { font-size: 16px; padding: 6px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confetti-canvas"></canvas>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <div>
+                <h1>Ramon's English</h1>
+                <span>Review: Home & City</span>
+            </div>
+        </div>
+        <ul class="module-list" id="module-list">
+            <!-- Inyectado por JS -->
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+            <button class="control-btn" id="mobile-menu-btn" style="display:none;" onclick="app.toggleMobileMenu()">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="score-container" id="score-display">
+                <i class="fa-solid fa-star"></i> <span id="score-text">0</span>
+            </div>
+            <div class="header-controls">
+                <button class="control-btn" onclick="app.toggleDictionary()" title="Dictionary">
+                    <i class="fa-solid fa-book"></i>
+                </button>
+                <button class="control-btn" onclick="app.toggleTheme()" title="Dark Mode">
+                    <i class="fa-solid fa-moon" id="theme-icon"></i>
+                </button>
+            </div>
+        </header>
+
+        <div class="progress-wrapper"><div class="progress-fill" id="progress-fill"></div></div>
+
+        <!-- Viewport con Scroll Nativo -->
+        <div class="slide-viewport" id="slide-viewport">
+            <div class="slide-container" id="slide-container">
+                <!-- Contenido inyectado por JS -->
+            </div>
+        </div>
+
+        <!-- Footer Navegación -->
+        <footer class="bottom-nav">
+            <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="app.prevSlide()">
+                <i class="fa-solid fa-arrow-left"></i> Back
+            </button>
+            <div class="slide-counter" id="slide-counter" style="display:none;"></div>
+            <button class="nav-btn nav-btn-next" id="btn-next" onclick="app.nextSlide()">
+                Continue <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </footer>
+    </main>
+
+    <div class="modal-overlay" id="dict-modal">
+        <div class="modal-content">
+            <i class="fa-solid fa-xmark modal-close" onclick="app.toggleDictionary()"></i>
+            <h2 style="margin-bottom: 20px; color: var(--text-main); font-size: 28px;"><i class="fa-solid fa-book" style="color:var(--primary);"></i> Dictionary</h2>
+            <div id="dict-content">
+                <!-- JS Injects Dictionary Here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Text-To-Speech System
+        const AudioSystem = {
+            synth: window.speechSynthesis,
+            voice: null,
+            init() {
+                if (!this.synth) return;
+                let voices = this.synth.getVoices();
+                if (voices.length) this.setVoice(voices);
+                this.synth.onvoiceschanged = () => this.setVoice(this.synth.getVoices());
+            },
+            setVoice(voices) {
+                this.voice = voices.find(v => v.lang.includes('en-US')) || voices.find(v => v.lang.includes('en-GB')) || voices[0];
+            },
+            speak(text, rate = 0.85) {
+                if (!this.synth || !this.voice) return;
+                this.synth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.voice = this.voice; utterance.lang = 'en-US'; utterance.rate = rate;
+                this.synth.speak(utterance);
+            }
+        };
+
+        // 2. Data Curriculum (Massive Object for Self-Study)
+        const Curriculum = {
+            dictionary: [
+                { en: "Kitchen", es: "Cocina" }, { en: "Living room", es: "Sala" }, { en: "Bedroom", es: "Habitación" }, { en: "Bathroom", es: "Baño" },
+                { en: "Fridge", es: "Refrigerador" }, { en: "Stove", es: "Estufa" }, { en: "Bed", es: "Cama" }, { en: "Shower", es: "Regadera" },
+                { en: "Supermarket", es: "Supermercado" }, { en: "Bank", es: "Banco" }, { en: "Park", es: "Parque" }, { en: "Gym", es: "Gimnasio" },
+                { en: "Mall", es: "Centro comercial" }, { en: "Bus stop", es: "Parada de autobús" },
+                { en: "Wash the dishes", es: "Lavar los trastes" }, { en: "Sweep the floor", es: "Barrer el piso" },
+                { en: "Buy groceries", es: "Comprar la despensa" }, { en: "Work out", es: "Hacer ejercicio" }, { en: "Hang out", es: "Pasar el rato" },
+                { en: "Always", es: "Siempre (100%)" }, { en: "Usually", es: "Usualmente (80%)" }, { en: "Sometimes", es: "A veces (50%)" }, { en: "Never", es: "Nunca (0%)" }
+            ],
+            modules: [
+                {
+                    id: "mod1", title: "1. My Home (There is/are)", icon: "fa-house",
+                    slides: [
+                        {
+                            type: "lesson", title: "Parts of the House & Objects", subtitle: "Listen and memorize the chunks.",
+                            chunks: [
+                                { en: "There is a fridge in the kitchen.", es: "Hay un refri en la cocina.", icon: "🧊" },
+                                { en: "There is a bed in the bedroom.", es: "Hay una cama en el cuarto.", icon: "🛏️" },
+                                { en: "There are plates on the table.", es: "Hay platos en la mesa.", icon: "🍽️" },
+                                { en: "There isn't any milk.", es: "No hay nada de leche.", icon: "🥛" },
+                                { en: "There aren't any clean towels.", es: "No hay toallas limpias.", icon: "🧣" }
+                            ]
+                        },
+                        {
+                            type: "matching", title: "Practice: Match!", subtitle: "Connect the object with the room.", pts: 10,
+                            pairs: [ { a: "Fridge", b: "Kitchen", id: 1 }, { a: "Bed", b: "Bedroom", id: 2 }, { a: "Sofa", b: "Living room", id: 3 }, { a: "Shower", b: "Bathroom", id: 4 } ]
+                        },
+                        {
+                            type: "fill", title: "Is or Are?", subtitle: "Choose the correct block.", pts: 15,
+                            sentences: [
+                                { text: "There {blank} TV in the living room.", answer: "is a", options: ["is a", "are", "isn't any"] },
+                                { text: "There {blank} clean plates.", answer: "are", options: ["is a", "are", "aren't any"] },
+                                { text: "There {blank} milk in the fridge. (Negative)", answer: "isn't any", options: ["is a", "isn't any", "are"] }
+                            ]
+                        },
+                        {
+                            type: "builder", title: "Build the negative sentence", subtitle: "Translate: 'No hay sartenes limpios.'", pts: 20,
+                            target: "No hay sartenes limpios.", words: ["clean", "any", "aren't", "pans.", "There"], correct: ["There", "aren't", "any", "clean", "pans."]
+                        }
+                    ]
+                },
+                {
+                    id: "mod2", title: "2. Hobbies & Chores", icon: "fa-broom",
+                    slides: [
+                        {
+                            type: "lesson", title: "Home Routines", subtitle: "Listen to the actions.",
+                            chunks: [
+                                { en: "I wash the dishes.", es: "Lavo los trastes.", icon: "🍽️" },
+                                { en: "I sweep the floor.", es: "Barro el piso.", icon: "🧹" },
+                                { en: "I make the bed.", es: "Tiendo la cama.", icon: "🛏️" },
+                                { en: "I listen to music.", es: "Escucho música.", icon: "🎧" },
+                                { en: "I play soccer.", es: "Juego fútbol.", icon: "⚽" }
+                            ]
+                        },
+                        {
+                            type: "matching", title: "Action matching", subtitle: "Match English with Spanish.", pts: 10,
+                            pairs: [ { a: "I sweep the floor.", b: "Barro el piso.", id: 1 }, { a: "I listen to music.", b: "Escucho música.", id: 2 }, { a: "I wash the dishes.", b: "Lavo los trastes.", id: 3 }, { a: "I play soccer.", b: "Juego fútbol.", id: 4 } ]
+                        },
+                        {
+                            type: "builder", title: "Sentence Builder", subtitle: "Translate: 'Yo barro el piso en la cocina.'", pts: 20,
+                            target: "Yo barro el piso en la cocina.", words: ["the floor", "in the", "I", "sweep", "kitchen."], correct: ["I", "sweep", "the floor", "in the", "kitchen."]
+                        }
+                    ]
+                },
+                {
+                    id: "mod3", title: "3. The City", icon: "fa-city",
+                    slides: [
+                        {
+                            type: "lesson", title: "Places in town", subtitle: "Places and what we do there.",
+                            chunks: [
+                                { en: "I buy groceries at the supermarket.", es: "Compro la despensa en el supermercado.", icon: "🛒" },
+                                { en: "I get money at the bank.", es: "Saco dinero en el banco.", icon: "💵" },
+                                { en: "I work out at the gym.", es: "Hago ejercicio en el gimnasio.", icon: "💪" },
+                                { en: "I wait at the bus stop.", es: "Espero en la parada de autobús.", icon: "🚌" }
+                            ]
+                        },
+                        {
+                            type: "fill", title: "Where are you?", subtitle: "Complete the sentence with the place.", pts: 15,
+                            sentences: [
+                                { text: "I buy groceries at the {blank}.", answer: "supermarket", options: ["supermarket", "bank", "gym"] },
+                                { text: "I work out at the {blank}.", answer: "gym", options: ["bus stop", "gym", "mall"] }
+                            ]
+                        },
+                        {
+                            type: "matching", title: "City Actions", subtitle: "Match the action with the place.", pts: 10,
+                            pairs: [ { a: "Buy groceries", b: "Supermarket", id: 1 }, { a: "Get money", b: "Bank", id: 2 }, { a: "Wait for bus", b: "Bus stop", id: 3 }, { a: "Work out", b: "Gym", id: 4 } ]
+                        }
+                    ]
+                },
+                {
+                    id: "mod4", title: "4. Frequency Adverbs", icon: "fa-calendar-days",
+                    slides: [
+                        {
+                            type: "lesson", title: "How often?", subtitle: "Remember the position: I + Adverb + Action.",
+                            chunks: [
+                                { en: "I always go to the park.", es: "Siempre voy al parque. (100%)", icon: "🟢" },
+                                { en: "I usually buy groceries on Sunday.", es: "Usualmente compro despensa el domingo. (80%)", icon: "🔵" },
+                                { en: "I sometimes watch movies.", es: "A veces veo películas. (50%)", icon: "🟡" },
+                                { en: "I never go to the mall.", es: "Nunca voy al centro comercial. (0%)", icon: "🔴" }
+                            ]
+                        },
+                        {
+                            type: "builder", title: "Build the routine", subtitle: "Translate: 'Yo usualmente compro la despensa.'", pts: 20,
+                            target: "Yo usualmente compro la despensa.", words: ["usually", "buy groceries.", "I"], correct: ["I", "usually", "buy groceries."]
+                        },
+                        {
+                            type: "builder", title: "Build the negative routine", subtitle: "Translate: 'Yo nunca voy al centro comercial.'", pts: 20,
+                            target: "Yo nunca voy al centro comercial.", words: ["go to", "never", "the mall.", "I"], correct: ["I", "never", "go to", "the mall."]
+                        }
+                    ]
+                },
+                {
+                    id: "mod5", title: "5. Final Challenge", icon: "fa-trophy",
+                    slides: [
+                        {
+                            type: "reading", title: "Reading: A busy weekend", subtitle: "Read carefully and answer True or False.", pts: 15,
+                            readingTitle: "Ramon's Saturday",
+                            text: "Hello, I am Ramon. I am at home. On Saturday morning, I always clean the house. I sweep the floor and wash the dishes. There is a fridge in my kitchen, but there isn't any milk today. <br><br>In the afternoon, I usually go to the city. I buy groceries at the supermarket and I sometimes take a walk in the park. I never go to the gym on Saturday. I am very busy!",
+                            questions: [
+                                { q: "Ramon never cleans the house on Saturday.", a: false },
+                                { q: "There is milk in the fridge today.", a: false },
+                                { q: "He usually buys groceries at the supermarket.", a: true },
+                                { q: "He always goes to the gym on Saturday.", a: false }
+                            ]
+                        },
+                        {
+                            type: "chat", title: "Chat with Carlos", subtitle: "Reply logically to make plans.", pts: 15,
+                            scenario: [
+                                { speaker: "npc", name: "Carlos", text: "Hey Ramon! Are you at home?" },
+                                { speaker: "player", options: [
+                                    { text: "Yes, I am here. I am sweeping the floor.", correct: true },
+                                    { text: "There is a bed.", correct: false }
+                                ]},
+                                { speaker: "npc", name: "Carlos", text: "Cool. Do you usually play soccer on Saturday?" },
+                                { speaker: "player", options: [
+                                    { text: "I buy groceries.", correct: false },
+                                    { text: "Yes, I sometimes play soccer in the park.", correct: true }
+                                ]},
+                                { speaker: "npc", name: "Carlos", text: "Awesome! Let's go to the park later." },
+                                { speaker: "player", options: [
+                                    { text: "Perfect. See you later!", correct: true },
+                                    { text: "There aren't any plates.", correct: false }
+                                ]}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const Confetti = {
+            canvas: null, ctx: null, particles: [], colors: ['#58CC02', '#3B82F6', '#FFC800', '#FF4B4B', '#A855F7'], animationId: null,
+            init() {
+                this.canvas = document.getElementById('confetti-canvas'); this.ctx = this.canvas.getContext('2d');
+                this.resize(); window.addEventListener('resize', () => this.resize());
+            },
+            resize() { this.canvas.width = window.innerWidth; this.canvas.height = window.innerHeight; },
+            fire() {
+                this.particles = [];
+                for (let i = 0; i < 150; i++) {
+                    this.particles.push({
+                        x: this.canvas.width / 2, y: this.canvas.height / 2 + 200, r: Math.random() * 6 + 4,
+                        dx: Math.random() * 20 - 10, dy: Math.random() * -20 - 10,
+                        color: this.colors[Math.floor(Math.random() * this.colors.length)], tilt: Math.floor(Math.random() * 10) - 10, tiltAngle: 0, tiltAngleInc: (Math.random() * 0.07) + 0.05
+                    });
+                }
+                if (!this.animationId) this.animate();
+                setTimeout(() => { this.particles = []; cancelAnimationFrame(this.animationId); this.animationId = null; this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); }, 4000);
+            },
+            animate() {
+                this.animationId = requestAnimationFrame(() => this.animate());
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.particles.forEach((p) => {
+                    p.tiltAngle += p.tiltAngleInc; p.y += (Math.cos(p.tiltAngle) + 1 + p.r / 2) / 2; p.x += Math.sin(p.tiltAngle) * 2;
+                    p.dy += 0.2; p.x += p.dx; p.y += p.dy;
+                    this.ctx.beginPath(); this.ctx.lineWidth = p.r; this.ctx.strokeStyle = p.color;
+                    this.ctx.moveTo(p.x + p.tilt + p.r, p.y); this.ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r); this.ctx.stroke();
+                });
+            }
+        };
+
+        class ReviewApp {
+            constructor(data) {
+                this.data = data;
+                this.flatSlides = [];
+                this.data.modules.forEach((mod, modIndex) => {
+                    mod.slides.forEach((slide, sIdx) => {
+                        this.flatSlides.push({ ...slide, modTitle: mod.title, modIndex: modIndex, isLastInMod: sIdx === mod.slides.length -1 });
+                    });
+                });
+                
+                this.currentIdx = 0;
+                this.total = this.flatSlides.length;
+                this.gameState = {}; 
+                this.score = 0;
+
+                this.dom = {
+                    modList: document.getElementById('module-list'),
+                    slideContainer: document.getElementById('slide-container'),
+                    viewport: document.getElementById('slide-viewport'),
+                    progress: document.getElementById('progress-fill'),
+                    btnPrev: document.getElementById('btn-prev'),
+                    btnNext: document.getElementById('btn-next'),
+                    scoreText: document.getElementById('score-text'),
+                    sidebar: document.getElementById('sidebar')
+                };
+
+                this.init();
+            }
+
+            init() {
+                AudioSystem.init(); Confetti.init();
+                this.loadProgress();
+                this.renderSidebar();
+                this.renderDictionary();
+                this.renderSlide();
+                
+                // Botones teclado y resizing
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight' && !this.dom.btnNext.disabled) this.nextSlide();
+                    if (e.key === 'ArrowLeft' && !this.dom.btnPrev.disabled) this.prevSlide();
+                });
+                
+                // Set responsive mobile menu btn display based on width
+                this.checkMobile();
+                window.addEventListener('resize', () => this.checkMobile());
+            }
+
+            checkMobile() {
+                document.getElementById('mobile-menu-btn').style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+            }
+
+            // Gamification Methods
+            addPoints(points, elementObj) {
+                this.score += points;
+                this.dom.scoreText.innerText = this.score;
+                this.saveProgress();
+
+                // Animación flotante
+                const floater = document.createElement('div');
+                floater.className = 'point-feedback';
+                floater.innerText = `+${points}`;
+                
+                if (elementObj) {
+                    const rect = elementObj.getBoundingClientRect();
+                    floater.style.left = `${rect.left + (rect.width/2)}px`;
+                    floater.style.top = `${rect.top}px`;
+                } else {
+                    floater.style.left = `50%`;
+                    floater.style.top = `40%`;
+                }
+                
+                document.body.appendChild(floater);
+                setTimeout(() => floater.remove(), 1000);
+            }
+
+            // Navigation
+            renderSidebar() {
+                this.dom.modList.innerHTML = '';
+                this.data.modules.forEach((mod, idx) => {
+                    const li = document.createElement('li');
+                    li.className = 'module-item';
+                    li.id = `mod-tab-${idx}`;
+                    li.onclick = () => {
+                        const targetIdx = this.flatSlides.findIndex(s => s.modIndex === idx);
+                        if (targetIdx !== -1) { this.currentIdx = targetIdx; this.renderSlide(); }
+                        if (window.innerWidth <= 768) this.toggleMobileMenu();
+                    };
+                    li.innerHTML = `
+                        <div class="module-icon"><i class="fa-solid ${mod.icon}"></i></div>
+                        <div class="module-title">${mod.title}</div>
+                    `;
+                    this.dom.modList.appendChild(li);
+                });
+            }
+
+            updateUI() {
+                const slide = this.flatSlides[this.currentIdx];
+                const pct = ((this.currentIdx + 1) / this.total) * 100;
+                this.dom.progress.style.width = `${pct}%`;
+                
+                this.dom.btnPrev.disabled = this.currentIdx === 0;
+                
+                if (this.currentIdx === this.total - 1) {
+                    this.dom.btnNext.innerHTML = '<i class="fa-solid fa-flag-checkered"></i> Finish';
+                } else {
+                    this.dom.btnNext.innerHTML = 'Continue <i class="fa-solid fa-arrow-right"></i>';
+                }
+                
+                // Por defecto, deshabilitar Next si es un ejercicio, hasta que lo resuelva (Auto-evaluación forzada)
+                if(slide.type !== 'lesson' && slide.type !== 'cover') {
+                    this.dom.btnNext.disabled = true;
+                } else {
+                    this.dom.btnNext.disabled = false;
+                }
+
+                document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
+                const activeTab = document.getElementById(`mod-tab-${slide.modIndex}`);
+                if (activeTab) {
+                    activeTab.classList.add('active');
+                    // Scroll sidebar if needed
+                    activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+
+                this.dom.viewport.scrollTop = 0; // Reset scroll on new slide
+                this.saveProgress();
+            }
+
+            enableNext() {
+                this.dom.btnNext.disabled = false;
+                // Pequeño resalte visual en el botón
+                this.dom.btnNext.style.animation = 'pulse 0.5s';
+                setTimeout(() => this.dom.btnNext.style.animation = '', 500);
+            }
+
+            nextSlide() {
+                if (this.currentIdx < this.total - 1) {
+                    this.currentIdx++; this.renderSlide();
+                } else {
+                    Confetti.fire();
+                    this.dom.slideContainer.innerHTML = `
+                        <div style="text-align:center; padding: 50px;">
+                            <i class="fa-solid fa-trophy" style="font-size: 80px; color: var(--accent); margin-bottom: 20px;"></i>
+                            <h1 style="font-size: 40px;">Review Complete!</h1>
+                            <p style="font-size: 24px; color: var(--text-muted); margin-top:20px;">You scored <b>${this.score}</b> points.</p>
+                            <button class="word-chip" style="margin-top: 40px;" onclick="app.resetCourse()">Start Over</button>
+                        </div>
+                    `;
+                }
+            }
+            prevSlide() { if (this.currentIdx > 0) { this.currentIdx--; this.renderSlide(); } }
+            resetCourse() { this.currentIdx = 0; this.score = 0; this.dom.scoreText.innerText = '0'; this.saveProgress(); this.renderSlide(); }
+
+            renderSlide() {
+                const slide = this.flatSlides[this.currentIdx];
+                this.gameState = {}; 
+                this.dom.slideContainer.innerHTML = ''; 
+                
+                let html = '';
+                const isLesson = slide.type === 'lesson';
+                const badgeClass = isLesson ? 'badge-lesson' : 'badge-exercise';
+                const badgeText = isLesson ? '<i class="fa-solid fa-book-open"></i> Study' : '<i class="fa-solid fa-dumbbell"></i> Practice';
+
+                if (slide.type !== 'cover') {
+                    html += `<div class="slide-type-badge ${badgeClass}">${badgeText}</div>`;
+                    html += `<h2 class="slide-title-main">${slide.title}</h2>`;
+                    html += `<p class="slide-subtitle">${slide.subtitle} ${slide.pts ? `<span style="color:var(--accent); font-weight:800; margin-left:10px;"><i class="fa-solid fa-star"></i> ${slide.pts} pts/item</span>` : ''}</p>`;
+                }
+
+                const wrapper = document.createElement('div');
+                wrapper.style.width = '100%';
+                wrapper.innerHTML = html;
+
+                switch(slide.type) {
+                    case 'lesson': this.renderLesson(wrapper, slide); break;
+                    case 'matching': this.renderMatching(wrapper, slide); break;
+                    case 'builder': this.renderBuilder(wrapper, slide); break;
+                    case 'fill': this.renderFill(wrapper, slide); break;
+                    case 'reading': this.renderReading(wrapper, slide); break;
+                    case 'chat': this.renderChat(wrapper, slide); break;
+                }
+
+                this.dom.slideContainer.appendChild(wrapper);
+                this.updateUI();
+            }
+
+            renderLesson(wrapper, slide) {
+                let chunksHTML = '<div class="chunk-grid">';
+                slide.chunks.forEach(chunk => {
+                    const safeText = chunk.en.replace(/<[^>]*>?/gm, '').replace(/'/g, "\\'");
+                    chunksHTML += `
+                        <div class="chunk-card">
+                            <div class="chunk-icon-wrapper">${chunk.icon}</div>
+                            <div class="chunk-content">
+                                <span class="chunk-en">${chunk.en}</span>
+                                <span class="chunk-es">${chunk.es}</span>
+                            </div>
+                            <button class="audio-btn" onclick="AudioSystem.speak('${safeText}')"><i class="fa-solid fa-volume-high"></i></button>
+                        </div>
+                    `;
+                });
+                chunksHTML += '</div>';
+                wrapper.innerHTML += chunksHTML;
+            }
+
+            renderMatching(wrapper, slide) {
+                this.gameState = { selA: null, selB: null, matches: 0, total: slide.pairs.length, pts: slide.pts };
+                let arrA = slide.pairs.map(p => ({ text: p.a, id: p.id, type: 'A' })).sort(() => Math.random() - 0.5);
+                let arrB = slide.pairs.map(p => ({ text: p.b, id: p.id, type: 'B' })).sort(() => Math.random() - 0.5);
+
+                const colA = document.createElement('div'); colA.className = 'matching-col';
+                const colB = document.createElement('div'); colB.className = 'matching-col';
+                const container = document.createElement('div'); container.className = 'game-matching-container';
+
+                const handleSelect = (btn, item) => {
+                    if(btn.classList.contains('matched')) return;
+                    wrapper.querySelectorAll('.match-btn').forEach(b => b.classList.remove('error'));
+
+                    if(item.type === 'A') {
+                        if(this.gameState.selA) this.gameState.selA.btn.classList.remove('selected');
+                        this.gameState.selA = { btn, id: item.id }; btn.classList.add('selected'); AudioSystem.speak(item.text); 
+                    } else {
+                        if(this.gameState.selB) this.gameState.selB.btn.classList.remove('selected');
+                        this.gameState.selB = { btn, id: item.id }; btn.classList.add('selected'); AudioSystem.speak(item.text);
+                    }
+
+                    if(this.gameState.selA && this.gameState.selB) {
+                        if(this.gameState.selA.id === this.gameState.selB.id) {
+                            this.gameState.selA.btn.classList.replace('selected', 'matched');
+                            this.gameState.selB.btn.classList.replace('selected', 'matched');
+                            this.addPoints(this.gameState.pts, this.gameState.selB.btn);
+                            this.gameState.matches++;
+                            this.gameState.selA = null; this.gameState.selB = null;
+                            
+                            if(this.gameState.matches === this.gameState.total) {
+                                this.enableNext(); Confetti.fire();
+                            }
+                        } else {
+                            this.gameState.selA.btn.classList.add('error'); this.gameState.selB.btn.classList.add('error');
+                            let btnA = this.gameState.selA.btn; let btnB = this.gameState.selB.btn;
+                            setTimeout(() => { btnA.classList.remove('selected', 'error'); btnB.classList.remove('selected', 'error'); }, 500);
+                            this.gameState.selA = null; this.gameState.selB = null;
+                        }
+                    }
+                };
+
+                arrA.forEach(item => { let btn = document.createElement('button'); btn.className = 'match-btn'; btn.innerText = item.text; btn.onclick = () => handleSelect(btn, item); colA.appendChild(btn); });
+                arrB.forEach(item => { let btn = document.createElement('button'); btn.className = 'match-btn'; btn.innerText = item.text; btn.onclick = () => handleSelect(btn, item); colB.appendChild(btn); });
+
+                container.appendChild(colA); container.appendChild(colB); wrapper.appendChild(container);
+            }
+
+            renderBuilder(wrapper, slide) {
+                let shuffled = [...slide.words].sort(() => Math.random() - 0.5);
+                
+                const bArea = document.createElement('div'); bArea.className = 'builder-area';
+                bArea.innerHTML = `<div class="builder-target">"${slide.target}"</div><div class="builder-dropzone" id="dz"></div><div class="builder-bank" id="bank"></div>`;
+                wrapper.appendChild(bArea);
+
+                setTimeout(() => {
+                    const dz = wrapper.querySelector('#dz'); const bank = wrapper.querySelector('#bank');
+                    shuffled.forEach(w => {
+                        let chip = document.createElement('button'); chip.className = 'word-chip'; chip.innerText = w;
+                        chip.onclick = () => {
+                            if(chip.parentElement === bank) {
+                                dz.appendChild(chip); chip.classList.add('in-zone'); AudioSystem.speak(w);
+                                this.checkBuilder(slide, dz);
+                            } else {
+                                bank.appendChild(chip); chip.classList.remove('in-zone'); dz.classList.remove('error', 'success');
+                            }
+                        };
+                        bank.appendChild(chip);
+                    });
+                }, 0);
+            }
+
+            checkBuilder(slide, dz) {
+                const current = Array.from(dz.children).map(c => c.innerText);
+                if(current.length === slide.correct.length) {
+                    let isOk = current.every((val, index) => val === slide.correct[index]);
+                    if(isOk) {
+                        dz.classList.add('success');
+                        this.addPoints(slide.pts, dz);
+                        AudioSystem.speak(slide.correct.join(" "));
+                        Array.from(dz.children).forEach(c => c.style.pointerEvents = 'none');
+                        this.enableNext();
+                        if(this.flatSlides[this.currentIdx].isLastInMod) Confetti.fire();
+                    } else {
+                        dz.classList.add('error');
+                        setTimeout(() => dz.classList.remove('error'), 500);
+                    }
+                }
+            }
+
+            renderFill(wrapper, slide) {
+                const fArea = document.createElement('div'); fArea.className = 'fill-container';
+                this.gameState.fillCurrent = 0; 
+                this.gameState.pts = slide.pts;
+                
+                const renderSentence = () => {
+                    if (this.gameState.fillCurrent >= slide.sentences.length) {
+                        fArea.innerHTML = `<div class="fill-sentence" style="color:var(--success);">Perfect! All sentences completed. 🎉</div>`;
+                        this.enableNext();
+                        if(this.flatSlides[this.currentIdx].isLastInMod) Confetti.fire();
+                        return;
+                    }
+                    const data = slide.sentences[this.gameState.fillCurrent];
+                    const parts = data.text.split('{blank}');
+                    let html = `<div class="fill-sentence">${parts[0]}<span class="fill-blank" id="fill-b"></span>${parts[1]}</div><div class="fill-options">`;
+                    data.options.forEach(opt => { html += `<button class="word-chip" onclick="app.checkFill(this, '${opt}', '${data.answer}')">${opt}</button>`; });
+                    html += `</div>`;
+                    fArea.innerHTML = html;
+                };
+                
+                window.app.checkFill = (btnEl, selected, answer) => {
+                    const b = document.getElementById('fill-b');
+                    if (selected === answer) {
+                        b.innerText = selected; b.classList.add('filled');
+                        this.addPoints(this.gameState.pts, b);
+                        const fullText = slide.sentences[this.gameState.fillCurrent].text.replace('{blank}', answer);
+                        AudioSystem.speak(fullText);
+                        setTimeout(() => { this.gameState.fillCurrent++; renderSentence(); }, 1200);
+                    } else {
+                        b.parentElement.style.animation = 'shake 0.5s';
+                        btnEl.style.borderColor = 'var(--error)'; btnEl.style.color = 'var(--error)';
+                        setTimeout(() => { b.parentElement.style.animation = ''; btnEl.style.borderColor=''; btnEl.style.color=''; }, 500);
+                    }
+                };
+
+                wrapper.appendChild(fArea); renderSentence();
+            }
+
+            renderReading(wrapper, slide) {
+                const rArea = document.createElement('div'); rArea.className = 'reading-container';
+                
+                let html = `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 20px;">
+                        <h3 style="color: var(--text-main); font-size: 24px;">${slide.readingTitle}</h3>
+                        <button class="control-btn" style="background:var(--bg-body);" onclick="AudioSystem.speak('${slide.text.replace(/<br>/g, ' ').replace(/'/g, "\\'")}', 0.85)"><i class="fa-solid fa-volume-high"></i></button>
+                    </div>
+                    <div class="reading-text">${slide.text}</div><div style="display:flex; flex-direction:column; gap: 15px;" id="quiz-area">
+                `;
+                slide.questions.forEach((q, i) => {
+                    html += `
+                        <div class="quiz-item" id="quiz-item-${i}">
+                            <div class="quiz-question">${q.q}</div>
+                            <div class="quiz-options">
+                                <button class="quiz-btn" onclick="app.checkQuiz(${i}, true, ${q.a === true}, ${slide.pts})">True</button>
+                                <button class="quiz-btn" onclick="app.checkQuiz(${i}, false, ${q.a === false}, ${slide.pts})">False</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                rArea.innerHTML = html + `</div>`;
+                
+                window.app.checkQuiz = (idx, selected, isCorrect, pts) => {
+                    const item = document.getElementById(`quiz-item-${idx}`);
+                    const btns = item.querySelectorAll('.quiz-btn');
+                    if (isCorrect) {
+                        btns.forEach(b => { if (b.innerText.toLowerCase() === selected.toString()) { b.classList.add('correct'); } else { b.style.opacity = '0.3'; } });
+                        this.addPoints(pts, item);
+                        const allItems = rArea.querySelectorAll('.quiz-item');
+                        let allCorrect = true; allItems.forEach(el => { if(!el.querySelector('.correct')) allCorrect = false; });
+                        if (allCorrect) this.enableNext();
+                    } else {
+                        const clickedBtn = Array.from(btns).find(b => b.innerText.toLowerCase() === selected.toString());
+                        clickedBtn.classList.add('incorrect');
+                        setTimeout(() => clickedBtn.classList.remove('incorrect'), 500);
+                    }
+                };
+                wrapper.appendChild(rArea);
+            }
+
+            renderChat(wrapper, slide) {
+                this.gameState = { step: 0, scenario: slide.scenario, pts: slide.pts };
+                const cArea = document.createElement('div'); cArea.className = 'chat-app';
+                cArea.innerHTML = `
+                    <div class="chat-header"><div class="chat-avatar"><i class="fa-solid fa-user"></i></div>
+                    <div><div class="chat-name">${slide.scenario[0].name || "Friend"}</div><div style="font-size:12px; opacity:0.8;">Online</div></div></div>
+                    <div class="chat-body" id="chat-body"></div><div class="chat-controls" id="chat-controls"></div>
+                `;
+                wrapper.appendChild(cArea);
+                setTimeout(() => this.playChatStep(wrapper.querySelector('#chat-body'), wrapper.querySelector('#chat-controls')), 0);
+            }
+
+            playChatStep(history, controls) {
+                const data = this.gameState.scenario[this.gameState.step];
+                if(!data) {
+                    controls.innerHTML = '<div style="color:var(--success); font-weight:800; text-align:center; padding:10px;">Chat Complete!</div>';
+                    this.enableNext(); Confetti.fire();
+                    return;
+                }
+
+                if(data.speaker === 'npc') {
+                    controls.innerHTML = '<span style="color:var(--text-muted); padding:15px; font-weight:600;">Typing...</span>';
+                    setTimeout(() => {
+                        history.innerHTML += `<div class="msg-bubble msg-npc">${data.text}</div>`;
+                        AudioSystem.speak(data.text);
+                        history.scrollTop = history.scrollHeight;
+                        this.gameState.step++;
+                        this.playChatStep(history, controls);
+                    }, 1000);
+                } else {
+                    controls.innerHTML = '';
+                    data.options.forEach(opt => {
+                        let btn = document.createElement('button'); btn.className = 'chat-opt-btn'; btn.innerText = opt.text;
+                        btn.onclick = () => {
+                            if(opt.correct) {
+                                history.innerHTML += `<div class="msg-bubble msg-player">${opt.text}</div>`;
+                                this.addPoints(this.gameState.pts, btn);
+                                AudioSystem.speak(opt.text);
+                                history.scrollTop = history.scrollHeight;
+                                this.gameState.step++;
+                                this.playChatStep(history, controls);
+                            } else {
+                                btn.style.borderColor = 'var(--error)'; btn.style.color = 'var(--error)';
+                                setTimeout(() => { btn.style.borderColor = ''; btn.style.color = ''; }, 600);
+                            }
+                        };
+                        controls.appendChild(btn);
+                    });
+                }
+            }
+
+            toggleTheme() {
+                const body = document.body; const icon = document.getElementById('theme-icon');
+                if (body.getAttribute('data-theme') === 'dark') { body.removeAttribute('data-theme'); icon.className = 'fa-solid fa-moon'; }
+                else { body.setAttribute('data-theme', 'dark'); icon.className = 'fa-solid fa-sun'; }
+            }
+
+            toggleMobileMenu() { this.dom.sidebar.classList.toggle('mobile-open'); }
+
+            renderDictionary() {
+                const dictDiv = document.getElementById('dict-content');
+                let html = '';
+                this.data.dictionary.forEach(word => {
+                    html += `<div class="dict-item"><span class="dict-en">${word.en}</span><span class="dict-es">${word.es}</span>
+                    <button class="control-btn" style="width:36px;height:36px;font-size:14px;border:none;background:rgba(59,130,246,0.1);" onclick="AudioSystem.speak('${word.en}')"><i class="fa-solid fa-volume-high"></i></button></div>`;
+                });
+                dictDiv.innerHTML = html;
+            }
+
+            toggleDictionary() { document.getElementById('dict-modal').classList.toggle('active'); }
+
+            saveProgress() {
+                try {
+                    localStorage.setItem('ramon_review_progress', this.currentIdx);
+                    localStorage.setItem('ramon_review_score', this.score);
+                } catch(e) {}
+            }
+
+            loadProgress() {
+                try {
+                    const savedIdx = localStorage.getItem('ramon_review_progress');
+                    const savedScore = localStorage.getItem('ramon_review_score');
+                    if (savedIdx !== null && !isNaN(savedIdx)) this.currentIdx = parseInt(savedIdx);
+                    if (savedScore !== null && !isNaN(savedScore)) { this.score = parseInt(savedScore); this.dom.scoreText.innerText = this.score; }
+                } catch(e) {}
+            }
+        }
+
+        let appInstance;
+        window.onload = () => { appInstance = new ReviewApp(Curriculum); window.app = appInstance; };
+    </script>
+</body>
+</html>
