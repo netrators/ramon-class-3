@@ -470,6 +470,20 @@
         </div>
     </div>
 
+    <!-- MODAL DE EXPLICACIÓN (NUEVO) -->
+    <div class="modal-overlay" id="expl-modal">
+        <div class="modal-content" style="text-align: center; max-width: 400px; padding: 40px 30px;">
+            <div style="font-size: 55px; margin-bottom: 15px; animation: bounce 2s infinite;">💡</div>
+            <h2 id="expl-title" style="color: var(--error); margin-bottom: 15px; font-size: 26px;">¡Casi!</h2>
+            <p id="expl-message" style="font-size: 17px; color: var(--text-main); margin-bottom: 25px; line-height: 1.5; font-weight: 600;"></p>
+            <div style="background: rgba(88, 204, 2, 0.1); padding: 20px; border-radius: 15px; border: 2px solid var(--success); margin-bottom: 25px;">
+                <span style="display: block; font-size: 13px; color: var(--success); font-weight: 800; text-transform: uppercase; margin-bottom: 8px; letter-spacing: 1px;">La respuesta correcta es:</span>
+                <span id="expl-correct" style="font-size: 20px; font-weight: 800; color: var(--text-main);"></span>
+            </div>
+            <button class="word-chip" style="background: var(--primary); color: white; border-color: var(--primary-shadow); width: 100%; font-size: 18px;" onclick="app.closeExplanation()">¡Entendido!</button>
+        </div>
+    </div>
+
     <script>
         // 1. Text-To-Speech System
         const AudioSystem = {
@@ -520,19 +534,24 @@
                         },
                         {
                             type: "matching", title: "Practice: Match!", subtitle: "Connect the object with the room.", pts: 10,
-                            pairs: [ { a: "Fridge", b: "Kitchen", id: 1 }, { a: "Bed", b: "Bedroom", id: 2 }, { a: "Sofa", b: "Living room", id: 3 }, { a: "Shower", b: "Bathroom", id: 4 } ]
+                            pairs: [ 
+                                { a: "Fridge", b: "Kitchen", id: 1, expl: "El refrigerador (fridge) se encuentra en la cocina." }, 
+                                { a: "Bed", b: "Bedroom", id: 2, expl: "La cama (bed) va en la habitación." }, 
+                                { a: "Sofa", b: "Living room", id: 3, expl: "El sofá (sofa) pertenece a la sala de estar." }, 
+                                { a: "Shower", b: "Bathroom", id: 4, expl: "La regadera (shower) está en el baño." } 
+                            ]
                         },
                         {
                             type: "fill", title: "Is or Are?", subtitle: "Choose the correct block.", pts: 15,
                             sentences: [
-                                { text: "There {blank} TV in the living room.", answer: "is a", options: ["is a", "are", "isn't any"] },
-                                { text: "There {blank} clean plates.", answer: "are", options: ["is a", "are", "aren't any"] },
-                                { text: "There {blank} milk in the fridge. (Negative)", answer: "isn't any", options: ["is a", "isn't any", "are"] }
+                                { text: "There {blank} TV in the living room.", answer: "is a", options: ["is a", "are", "isn't any"], expl: "Usamos 'is a' porque hablamos de un solo televisor (singular)." },
+                                { text: "There {blank} clean plates.", answer: "are", options: ["is a", "are", "aren't any"], expl: "Usamos 'are' porque hablamos de varios platos limpios (plural)." },
+                                { text: "There {blank} milk in the fridge. (Negative)", answer: "isn't any", options: ["is a", "isn't any", "are"], expl: "Usamos 'isn't any' para decir que NO hay nada de un líquido/incontable como la leche." }
                             ]
                         },
                         {
                             type: "builder", title: "Build the negative sentence", subtitle: "Translate: 'No hay sartenes limpios.'", pts: 20,
-                            target: "No hay sartenes limpios.", words: ["clean", "any", "aren't", "pans.", "There"], correct: ["There", "aren't", "any", "clean", "pans."]
+                            target: "No hay sartenes limpios.", words: ["clean", "any", "aren't", "pans.", "There"], correct: ["There", "aren't", "any", "clean", "pans."], expl: "La estructura negativa en plural es: There + aren't + any + adjetivo + sustantivo."
                         }
                     ]
                 },
@@ -551,11 +570,16 @@
                         },
                         {
                             type: "matching", title: "Action matching", subtitle: "Match English with Spanish.", pts: 10,
-                            pairs: [ { a: "I sweep the floor.", b: "Barro el piso.", id: 1 }, { a: "I listen to music.", b: "Escucho música.", id: 2 }, { a: "I wash the dishes.", b: "Lavo los trastes.", id: 3 }, { a: "I play soccer.", b: "Juego fútbol.", id: 4 } ]
+                            pairs: [ 
+                                { a: "I sweep the floor.", b: "Barro el piso.", id: 1, expl: "Sweep the floor significa 'barrer el piso'." }, 
+                                { a: "I listen to music.", b: "Escucho música.", id: 2, expl: "Listen to music significa 'escuchar música'." }, 
+                                { a: "I wash the dishes.", b: "Lavo los trastes.", id: 3, expl: "Wash the dishes significa 'lavar los trastes'." }, 
+                                { a: "I play soccer.", b: "Juego fútbol.", id: 4, expl: "Play soccer significa 'jugar fútbol'." } 
+                            ]
                         },
                         {
                             type: "builder", title: "Sentence Builder", subtitle: "Translate: 'Yo barro el piso en la cocina.'", pts: 20,
-                            target: "Yo barro el piso en la cocina.", words: ["the floor", "in the", "I", "sweep", "kitchen."], correct: ["I", "sweep", "the floor", "in the", "kitchen."]
+                            target: "Yo barro el piso en la cocina.", words: ["the floor", "in the", "I", "sweep", "kitchen."], correct: ["I", "sweep", "the floor", "in the", "kitchen."], expl: "El orden correcto es: Sujeto (I) + Verbo (sweep) + Objeto (the floor) + Lugar (in the kitchen)."
                         }
                     ]
                 },
@@ -574,13 +598,18 @@
                         {
                             type: "fill", title: "Where are you?", subtitle: "Complete the sentence with the place.", pts: 15,
                             sentences: [
-                                { text: "I buy groceries at the {blank}.", answer: "supermarket", options: ["supermarket", "bank", "gym"] },
-                                { text: "I work out at the {blank}.", answer: "gym", options: ["bus stop", "gym", "mall"] }
+                                { text: "I buy groceries at the {blank}.", answer: "supermarket", options: ["supermarket", "bank", "gym"], expl: "Compramos la despensa (groceries) en el supermercado." },
+                                { text: "I work out at the {blank}.", answer: "gym", options: ["bus stop", "gym", "mall"], expl: "Hacemos ejercicio (work out) en el gimnasio (gym)." }
                             ]
                         },
                         {
                             type: "matching", title: "City Actions", subtitle: "Match the action with the place.", pts: 10,
-                            pairs: [ { a: "Buy groceries", b: "Supermarket", id: 1 }, { a: "Get money", b: "Bank", id: 2 }, { a: "Wait for bus", b: "Bus stop", id: 3 }, { a: "Work out", b: "Gym", id: 4 } ]
+                            pairs: [ 
+                                { a: "Buy groceries", b: "Supermarket", id: 1, expl: "La despensa (groceries) se compra en el Supermercado." }, 
+                                { a: "Get money", b: "Bank", id: 2, expl: "El dinero (money) se obtiene en el Banco." }, 
+                                { a: "Wait for bus", b: "Bus stop", id: 3, expl: "Esperamos el autobús en la Parada (Bus stop)." }, 
+                                { a: "Work out", b: "Gym", id: 4, expl: "El ejercicio (work out) se hace en el Gimnasio." } 
+                            ]
                         }
                     ]
                 },
@@ -598,11 +627,11 @@
                         },
                         {
                             type: "builder", title: "Build the routine", subtitle: "Translate: 'Yo usualmente compro la despensa.'", pts: 20,
-                            target: "Yo usualmente compro la despensa.", words: ["usually", "buy groceries.", "I"], correct: ["I", "usually", "buy groceries."]
+                            target: "Yo usualmente compro la despensa.", words: ["usually", "buy groceries.", "I"], correct: ["I", "usually", "buy groceries."], expl: "Los adverbios de frecuencia van justo después del sujeto: I + usually + acción."
                         },
                         {
                             type: "builder", title: "Build the negative routine", subtitle: "Translate: 'Yo nunca voy al centro comercial.'", pts: 20,
-                            target: "Yo nunca voy al centro comercial.", words: ["go to", "never", "the mall.", "I"], correct: ["I", "never", "go to", "the mall."]
+                            target: "Yo nunca voy al centro comercial.", words: ["go to", "never", "the mall.", "I"], correct: ["I", "never", "go to", "the mall."], expl: "El adverbio 'never' va antes de la acción: I + never + go to + the mall."
                         }
                     ]
                 },
@@ -614,10 +643,10 @@
                             readingTitle: "Ramon's Saturday",
                             text: "Hello, I am Ramon. I am at home. On Saturday morning, I always clean the house. I sweep the floor and wash the dishes. There is a fridge in my kitchen, but there isn't any milk today. <br><br>In the afternoon, I usually go to the city. I buy groceries at the supermarket and I sometimes take a walk in the park. I never go to the gym on Saturday. I am very busy!",
                             questions: [
-                                { q: "Ramon never cleans the house on Saturday.", a: false },
-                                { q: "There is milk in the fridge today.", a: false },
-                                { q: "He usually buys groceries at the supermarket.", a: true },
-                                { q: "He always goes to the gym on Saturday.", a: false }
+                                { q: "Ramon never cleans the house on Saturday.", a: false, expl: "Falso. En el texto dice explícitamente: 'I always clean the house' (siempre limpio la casa)." },
+                                { q: "There is milk in the fridge today.", a: false, expl: "Falso. El texto dice 'there isn't any milk today' (no hay nada de leche hoy)." },
+                                { q: "He usually buys groceries at the supermarket.", a: true, expl: "Verdadero. Él menciona 'I usually go to the city. I buy groceries at the supermarket'." },
+                                { q: "He always goes to the gym on Saturday.", a: false, expl: "Falso. En el texto dice 'I never go to the gym on Saturday' (nunca voy al gimnasio el sábado)." }
                             ]
                         },
                         {
@@ -626,17 +655,17 @@
                                 { speaker: "npc", name: "Carlos", text: "Hey Ramon! Are you at home?" },
                                 { speaker: "player", options: [
                                     { text: "Yes, I am here. I am sweeping the floor.", correct: true },
-                                    { text: "There is a bed.", correct: false }
+                                    { text: "There is a bed.", correct: false, expl: "Carlos te está preguntando si estás en casa, no qué muebles hay." }
                                 ]},
                                 { speaker: "npc", name: "Carlos", text: "Cool. Do you usually play soccer on Saturday?" },
                                 { speaker: "player", options: [
-                                    { text: "I buy groceries.", correct: false },
+                                    { text: "I buy groceries.", correct: false, expl: "Carlos preguntó específicamente si juegas fútbol (play soccer), no si compras despensa." },
                                     { text: "Yes, I sometimes play soccer in the park.", correct: true }
                                 ]},
                                 { speaker: "npc", name: "Carlos", text: "Awesome! Let's go to the park later." },
                                 { speaker: "player", options: [
                                     { text: "Perfect. See you later!", correct: true },
-                                    { text: "There aren't any plates.", correct: false }
+                                    { text: "There aren't any plates.", correct: false, expl: "Carlos te está invitando al parque. Debes aceptar o despedirte, no hablar de platos." }
                                 ]}
                             ]
                         }
@@ -690,6 +719,7 @@
                 this.total = this.flatSlides.length;
                 this.gameState = {}; 
                 this.score = 0;
+                this.explanationCallback = null; // NUEVO: Callback para autocorrección
 
                 this.dom = {
                     modList: document.getElementById('module-list'),
@@ -725,6 +755,25 @@
 
             checkMobile() {
                 document.getElementById('mobile-menu-btn').style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+            }
+
+            // NUEVO: Métodos de Explicación y Autocorrección
+            showExplanation(title, message, correctAnswer, callback) {
+                document.getElementById('expl-title').innerText = title;
+                document.getElementById('expl-message').innerText = message;
+                document.getElementById('expl-correct').innerText = correctAnswer;
+                this.explanationCallback = callback;
+                
+                const modal = document.getElementById('expl-modal');
+                modal.classList.add('active');
+            }
+
+            closeExplanation() {
+                document.getElementById('expl-modal').classList.remove('active');
+                if (this.explanationCallback) {
+                    this.explanationCallback();
+                    this.explanationCallback = null;
+                }
             }
 
             // Gamification Methods
@@ -913,9 +962,28 @@
                                 this.enableNext(); Confetti.fire();
                             }
                         } else {
+                            // NUEVA LÓGICA: Explicación y Autocorrección
+                            let correctMatch = slide.pairs.find(p => p.id === this.gameState.selA.id);
+                            let explanation = correctMatch.expl || "Esa no es la pareja correcta.";
+                            
                             this.gameState.selA.btn.classList.add('error'); this.gameState.selB.btn.classList.add('error');
                             let btnA = this.gameState.selA.btn; let btnB = this.gameState.selB.btn;
-                            setTimeout(() => { btnA.classList.remove('selected', 'error'); btnB.classList.remove('selected', 'error'); }, 500);
+                            let savedSelA = this.gameState.selA; // Guardar referencia para autocorregir
+
+                            this.showExplanation("¡Pareja incorrecta!", explanation, `${correctMatch.a} = ${correctMatch.b}`, () => {
+                                btnA.classList.remove('selected', 'error'); btnB.classList.remove('selected', 'error');
+                                
+                                // Autocorrección
+                                savedSelA.btn.classList.add('matched');
+                                let correctBtnB = Array.from(wrapper.querySelectorAll('.match-btn')).find(b => b.innerText === correctMatch.b);
+                                if(correctBtnB) correctBtnB.classList.add('matched');
+
+                                this.gameState.matches++;
+                                if(this.gameState.matches === this.gameState.total) {
+                                    this.enableNext();
+                                }
+                            });
+                            
                             this.gameState.selA = null; this.gameState.selB = null;
                         }
                     }
@@ -963,8 +1031,28 @@
                         this.enableNext();
                         if(this.flatSlides[this.currentIdx].isLastInMod) Confetti.fire();
                     } else {
+                        // NUEVA LÓGICA: Explicación y Autocorrección
                         dz.classList.add('error');
-                        setTimeout(() => dz.classList.remove('error'), 500);
+                        let explanation = slide.expl || "El orden de las palabras no es el correcto.";
+                        
+                        this.showExplanation("Orden incorrecto", explanation, slide.correct.join(" "), () => {
+                            dz.classList.remove('error');
+                            dz.innerHTML = '';
+                            const bank = document.getElementById('bank');
+                            bank.innerHTML = '';
+                            
+                            // Autocorrección Visual
+                            slide.correct.forEach(w => {
+                                let chip = document.createElement('button'); 
+                                chip.className = 'word-chip in-zone'; 
+                                chip.innerText = w;
+                                chip.style.pointerEvents = 'none';
+                                dz.appendChild(chip);
+                            });
+                            
+                            dz.classList.add('success');
+                            this.enableNext();
+                        });
                     }
                 }
             }
@@ -998,9 +1086,21 @@
                         AudioSystem.speak(fullText);
                         setTimeout(() => { this.gameState.fillCurrent++; renderSentence(); }, 1200);
                     } else {
+                        // NUEVA LÓGICA: Explicación y Autocorrección
                         b.parentElement.style.animation = 'shake 0.5s';
                         btnEl.style.borderColor = 'var(--error)'; btnEl.style.color = 'var(--error)';
-                        setTimeout(() => { b.parentElement.style.animation = ''; btnEl.style.borderColor=''; btnEl.style.color=''; }, 500);
+                        
+                        let sentenceData = slide.sentences[this.gameState.fillCurrent];
+                        let explanation = sentenceData.expl || "Esa opción no completa correctamente la oración.";
+
+                        this.showExplanation("¡Casi!", explanation, answer, () => {
+                            b.parentElement.style.animation = ''; btnEl.style.borderColor=''; btnEl.style.color='';
+                            // Autocorrección
+                            b.innerText = answer; b.classList.add('filled');
+                            const fullText = sentenceData.text.replace('{blank}', answer);
+                            AudioSystem.speak(fullText);
+                            setTimeout(() => { this.gameState.fillCurrent++; renderSentence(); }, 1200);
+                        });
                     }
                 };
 
@@ -1040,9 +1140,30 @@
                         let allCorrect = true; allItems.forEach(el => { if(!el.querySelector('.correct')) allCorrect = false; });
                         if (allCorrect) this.enableNext();
                     } else {
+                        // NUEVA LÓGICA: Explicación y Autocorrección
                         const clickedBtn = Array.from(btns).find(b => b.innerText.toLowerCase() === selected.toString());
                         clickedBtn.classList.add('incorrect');
-                        setTimeout(() => clickedBtn.classList.remove('incorrect'), 500);
+                        
+                        let qData = slide.questions[idx];
+                        let correctAnswerStr = qData.a ? "True" : "False";
+                        let explanation = qData.expl || "La afirmación no coincide con lo que dice el texto.";
+
+                        this.showExplanation("Información incorrecta", explanation, correctAnswerStr, () => {
+                            clickedBtn.classList.remove('incorrect');
+                            // Autocorrección
+                            btns.forEach(b => { 
+                                if (b.innerText.toLowerCase() === correctAnswerStr.toLowerCase()) { 
+                                    b.classList.add('correct'); 
+                                } else { 
+                                    b.style.opacity = '0.3'; 
+                                    b.style.pointerEvents = 'none';
+                                } 
+                            });
+                            
+                            const allItems = rArea.querySelectorAll('.quiz-item');
+                            let allCorrect = true; allItems.forEach(el => { if(!el.querySelector('.correct')) allCorrect = false; });
+                            if (allCorrect) this.enableNext();
+                        });
                     }
                 };
                 wrapper.appendChild(rArea);
@@ -1090,8 +1211,21 @@
                                 this.gameState.step++;
                                 this.playChatStep(history, controls);
                             } else {
+                                // NUEVA LÓGICA: Explicación y Autocorrección
                                 btn.style.borderColor = 'var(--error)'; btn.style.color = 'var(--error)';
-                                setTimeout(() => { btn.style.borderColor = ''; btn.style.color = ''; }, 600);
+                                
+                                let correctOpt = data.options.find(o => o.correct);
+                                let explanation = opt.expl || "Esta respuesta no tiene sentido en el contexto de la conversación.";
+
+                                this.showExplanation("¡Ups!", explanation, correctOpt.text, () => {
+                                    btn.style.borderColor = ''; btn.style.color = '';
+                                    // Autocorrección
+                                    history.innerHTML += `<div class="msg-bubble msg-player">${correctOpt.text}</div>`;
+                                    AudioSystem.speak(correctOpt.text);
+                                    history.scrollTop = history.scrollHeight;
+                                    this.gameState.step++;
+                                    this.playChatStep(history, controls);
+                                });
                             }
                         };
                         controls.appendChild(btn);
